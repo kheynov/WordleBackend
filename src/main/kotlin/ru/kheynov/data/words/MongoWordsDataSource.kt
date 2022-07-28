@@ -2,6 +2,8 @@ package ru.kheynov.data.words
 
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
+import ru.kheynov.utils.getExpirationTime
+import ru.kheynov.utils.unixTime
 import kotlin.random.Random
 
 class MongoWordsDataSource(
@@ -23,7 +25,7 @@ class MongoWordsDataSource(
 
         val lastWord = (if (language == Language.Russian) ruHistory else enHistory).find().first()
         if (lastWord != null) {
-            val isNotExpired = lastWord.timeToNext!! > System.currentTimeMillis() / 1000
+            val isNotExpired = lastWord.timeToNext!! > unixTime()
             if (isNotExpired) return lastWord
         }
 
@@ -32,7 +34,7 @@ class MongoWordsDataSource(
                 val word =
                     ruWordsQuiz.find().limit(-1).skip(randomNumber).first() ?: throw Exception("Error: word not found")
                 ruHistory.insertOne(word.apply {
-                    timeToNext = System.currentTimeMillis() / 1000 + 86400
+                    timeToNext = getExpirationTime()
                     lang = language.code
                 })
                 word
@@ -41,7 +43,7 @@ class MongoWordsDataSource(
                 val word =
                     enWordsQuiz.find().limit(-1).skip(randomNumber).first() ?: throw Exception("Error: word not found")
                 enHistory.insertOne(word.apply {
-                    timeToNext = System.currentTimeMillis() / 1000 + 86400
+                    timeToNext = getExpirationTime()
                     lang = language.code
                 })
                 word
