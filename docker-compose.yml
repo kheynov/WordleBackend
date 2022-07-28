@@ -1,0 +1,27 @@
+version: "3"
+services:
+  server:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - mongo
+    restart: always
+
+  db:
+    image: arm64v8/mongo:latest
+    ports:
+      - "27017:27017"
+    container_name: mongo-db
+    volumes:
+      - ./localvolumes/mongo:/data/db
+    networks:
+      - mongo
+    restart: always
+
+
+networks:
+  mongo:
+    driver: bridge
