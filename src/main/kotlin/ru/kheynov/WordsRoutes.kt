@@ -57,7 +57,7 @@ private fun Route.checkWord(
         }
         try {
             val checkResult =
-                wordsDataSource.checkWord(word = call.request.queryParameters["word"].toString(), language = language)
+                wordsDataSource.checkWord(call.request.queryParameters["word"].toString(), language = language)
             call.respond(HttpStatusCode.OK, mapOf("correct" to checkResult))
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError, e.message.toString())
@@ -79,7 +79,7 @@ private fun Route.resetWord(
         }
 
         try {
-            val newWord = wordsDataSource.updateWord(language = language)
+            val newWord = wordsDataSource.updateWord(language)
             call.respond(HttpStatusCode.OK, newWord)
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError, e.message.toString())
