@@ -13,7 +13,8 @@ fun Route.setupWordsRoutes(
     route("/api/word") {
         getWord(wordsDataSource)
         checkWord(wordsDataSource)
-        resetWord(wordsDataSource)
+        if (environment?.config?.property("server.isDebug")?.getString() == "true")
+            resetWord(wordsDataSource)
     }
 }
 

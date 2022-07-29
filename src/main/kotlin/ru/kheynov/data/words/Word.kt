@@ -1,8 +1,10 @@
 package ru.kheynov.data.words
 
+import kotlinx.serialization.SerialName
+
 @kotlinx.serialization.Serializable
 data class Word(
     val word: String,
     var lang: String? = null,
-    var timeToNext: Long? = null,
+    @SerialName("next") var timeToNext: Long? = null,
 )
