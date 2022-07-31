@@ -6,5 +6,5 @@ import kotlinx.serialization.SerialName
 data class Word(
     val word: String,
     var lang: String? = null,
-    @SerialName("next") var timeToNext: Long? = null,
+    var next: Long? = null,
 )
