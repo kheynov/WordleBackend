@@ -64,3 +64,4 @@ Java.gitignore
 /build/tmp/
 
 /localvolumes/
+.DS_Store
