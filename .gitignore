@@ -63,3 +63,4 @@ Java.gitignore
 /build/snapshot/
 /build/tmp/
 
+/localvolumes/
