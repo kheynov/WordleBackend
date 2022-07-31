@@ -1,5 +1,5 @@
 .gradle
-build/
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -34,7 +34,7 @@ out/
 
 ### VS Code ###
 .vscode/.gradle
-**/build/
+
 !src/**/build/
 
 # Ignore Gradle GUI config
@@ -57,3 +57,9 @@ gradle-app.setting
 Java.gitignore
 /localvolumes/
 /src/test/
+/build/classes/
+/build/kotlin/
+/build/resources/
+/build/snapshot/
+/build/tmp/
+
