@@ -25,11 +25,15 @@ class MongoWordsDataSource(
         val randomNumber =
             Random.nextInt((if (language == Language.Russian) ruWordsQuiz else enWordsQuiz).countDocuments().toInt())
 
-        val lastWord = (if (language == Language.Russian) ruHistory else enHistory).find().first()
+        val historySource = if (language == Language.Russian) ruHistory else enHistory
+
+        val lastWord = historySource.find().first()
+
         if (lastWord != null) {
             val isNotExpired = lastWord.next!! > unixTime()
             if (isNotExpired) return lastWord
         }
+        historySource.drop()
         this.onClear(language)
         val word = when (language) {
             Language.Russian -> {
