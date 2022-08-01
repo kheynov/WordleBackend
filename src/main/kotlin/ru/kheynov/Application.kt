@@ -1,12 +1,14 @@
 package ru.kheynov
 
 import io.ktor.server.application.*
+import kotlinx.coroutines.launch
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
+import ru.kheynov.data.stats.MongoStatsDataSource
 import ru.kheynov.data.words.MongoWordsDataSource
 import ru.kheynov.plugins.configureHTTP
 import ru.kheynov.plugins.configureMonitoring
-import ru.kheynov.plugins.configureRouting
+import ru.kheynov.routing.configureRouting
 import ru.kheynov.plugins.configureSerialization
 
 fun main(args: Array<String>): Unit =
@@ -18,10 +20,15 @@ fun Application.module() {
         connectionString = environment.config.property("mongo.connection_string").getString()
     ).coroutine.getDatabase("wordle")
 
-    val wordsDataSource = MongoWordsDataSource(db)
+    val statsDataSource = MongoStatsDataSource(db)
+    val wordsDataSource = MongoWordsDataSource(db, onClear = {
+        launch {
+            statsDataSource.clearStats(it)
+        }
+    })
 
     configureHTTP()
     configureMonitoring()
     configureSerialization()
-    configureRouting(wordsDataSource)
+    configureRouting(wordsDataSource, statsDataSource)
 }
